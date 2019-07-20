@@ -9,18 +9,15 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
-    // standard constructors
-
     @Autowired
     private UserRepo userRepository;
 
-    @GetMapping("/users")
-
+    @RequestMapping("/api/users")
     public List<User> getUsers() {
         return (List<User>) userRepository.findAll();
     }
 
-    @PostMapping("/users")
+    @PostMapping("/api/users")
     void addUser(@RequestBody User user) {
         userRepository.save(user);
     }

@@ -11,10 +11,11 @@ node() {
             }
         }
         stage("Build") {
-            sh(" mvn clean package")
+            withMaven(maven: 'maven', jdk: 'jdk') {
+                sh(" mvn clean package")
+            }
         }
     } catch(error) {
-        sendFailureEmail(committerEmail)
         throw error
     } finally {
         cleanWs()

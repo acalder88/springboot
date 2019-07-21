@@ -2,7 +2,7 @@
 
 def buildDockerImage(version, snapshot) {
     def host = "629546332162.dkr.ecr.us-east-1.amazonaws.com"
-    def repo = springboot
+    def repo = "springboot"
     def region = us-east-1
     def tag = "${version}-${snapshot}"
     def endpoint = "${host}/${repo}:${tag}"

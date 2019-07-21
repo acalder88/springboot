@@ -38,7 +38,7 @@ node() {
             withMaven(maven: 'maven', jdk: 'jdk') {
                 version = getVersion()
             }
-            echo (${version})
+            echo ("${version}")
         }
         stage("Test") {
             withMaven(maven: 'maven', jdk: 'jdk') {

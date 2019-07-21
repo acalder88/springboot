@@ -25,7 +25,7 @@ def copyJar() {
 }
 
 def getVersion() {
-    return sh(script:"mvn -q -Dexec.executable=echo -Dexec.args='\${project.version}' --non-recursive exec:exec | tail -1 | head  -1", returnStdout: true)
+    return sh(script:"mvn -q -Dexec.executable=echo -Dexec.args='\${project.version}' --non-recursive exec:exec | tail -1 | tr '\n' ''", returnStdout: true)
 }
 
 def publishImage(image) {

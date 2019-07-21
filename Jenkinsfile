@@ -1,15 +1,22 @@
 #!/usr/bin/env groovy
 
 node() {
-    stage("Setup"){
-        checkout scm
-    }
-    stage("Test") {
-        withMaven(maven: 'maven') {
-            sh("mvn clean test -U")
+    try{
+        stage("Setup"){
+            checkout scm
         }
-    }
-    stage("Build") {
-        sh(" mvn clean package")
+        stage("Test") {
+            withMaven(maven: 'maven') {
+                sh("mvn clean test -U")
+            }
+        }
+        stage("Build") {
+            sh(" mvn clean package")
+        }
+    } catch(error) {
+        sendFailureEmail(committerEmail)
+        throw error
+    } finally {
+        cleanWs()
     }
 }

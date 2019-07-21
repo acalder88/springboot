@@ -3,7 +3,7 @@
 def buildDockerImage(version, snapshot) {
     def host = "629546332162.dkr.ecr.us-east-1.amazonaws.com"
     def repo = "springboot"
-    def region = us-east-1
+    def region = "us-east-1"
     def tag = "${version}-${snapshot}"
     def endpoint = "${host}/${repo}:${tag}"
     echo("Building docker image: ${endpoint}")
@@ -46,7 +46,7 @@ node() {
         }
         stage("Build") {
             withMaven(maven: 'maven', jdk: 'jdk') {
-                sh(" mvn clean package")
+                sh(" mvn clean package -DskipTests -U")
             }
         }
         stage("Build Image") {

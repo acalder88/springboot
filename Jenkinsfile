@@ -28,10 +28,15 @@ def getVersion() {
     return sh(script:"mvn -q -Dexec.executable=echo -Dexec.args='\${project.version}' --non-recursive exec:exec | tail -1", returnStdout: true)
 }
 
-
+def publishImage(image) {
+    sh("aws ecr batch-delete-image --repository-name=${image.repo} --image-ids imageTag=${image.tag} --region us-east-1")
+    echo("Pushing image: ${image.endpoint}")
+    sh("docker push ${image.endpoint}")
+    sh("docker rmi ${image.endpoint}")
+}
 
 node() {
-    def version
+    def version, image
     try{
         stage("Setup"){
             checkout scm
@@ -53,8 +58,11 @@ node() {
         stage("Build Image") {
             copyJar()
             dir("docker") {
-                buildDockerImage(version, env.BRANCH_NAME)
+                image = buildDockerImage(version, env.BRANCH_NAME)
             }
+        }
+        stage("Publish Image") {
+            publishImage(image)
         }
     } catch(error) {
         throw error

@@ -9,12 +9,11 @@ ENV JAVA_VER=1.8.0
 
 #WORKDIR /home/test
 
-COPY clarifi-loan-handler-service.jar .
-COPY start.sh .
+COPY demoBack.jar .
 
-RUN chown test:test start.sh
-RUN chmod ug+x start.sh
+#RUN chown test:test start.sh
+#RUN chmod ug+x start.sh
 
-USER test
+#USER test
 
-ENTRYPOINT ["sh", "start.sh"]
+ENTRYPOINT ["java", "-jar",  "start.sh"]

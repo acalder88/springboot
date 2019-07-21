@@ -6,7 +6,7 @@ node() {
             checkout scm
         }
         stage("Test") {
-            withMaven(maven: 'maven') {
+            withMaven(maven: 'maven', jdk: 'jdk) {
                 sh("mvn clean test -U")
             }
         }

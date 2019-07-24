@@ -1,5 +1,19 @@
 #!/usr/bin/env groovy
 
+def sendFailureEmail() {
+    def content = "Build for branch ${env.BRANCH_NAME} Failed."
+    def info = 'Check the attached log or log into jenkins'
+    emailext(
+        mimeType: "text/html; charset=UTF-8",
+        to: "alejandrocalderonvelez@gmail.com",
+        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: "RequesterRecipientProvider"]],
+        body: "${content}<br/>${info}<br/>",
+        subject: "Jenkins: Your build ${env.BRANCH_NAME} - Build #${env.BUILD_NUMBER} - Failed!",
+        attachLog: true,
+        attachmentsPattern: 'reports.zip'
+    )
+}
+
 node() {
     try{
         stage("Setup"){
@@ -18,6 +32,7 @@ node() {
     } catch(error) {
         throw error
     } finally {
+        sendFailureEmail()
         cleanWs()
     }
 }

@@ -16,4 +16,4 @@ COPY demoBack.jar .
 
 #USER test
 
-ENTRYPOINT ["java", "-jar",  "start.sh"]
+ENTRYPOINT ["java", "-jar",  "demoBack.jar"]

@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * Controller to handle the health of the service.
  *
@@ -23,6 +26,12 @@ public class TestController {
   @ResponseBody
   public String getTest() {
     return "Hello World";
+  }
+
+  @RequestMapping("/ip")
+  @ResponseBody
+  public String getIP() throws UnknownHostException {
+    return InetAddress.getLocalHost().getHostAddress();
   }
 
 }

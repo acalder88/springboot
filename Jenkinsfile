@@ -31,8 +31,8 @@ node() {
         }
     } catch(error) {
         throw error
+		sendFailureEmail()
     } finally {
-        sendFailureEmail()
         cleanWs()
     }
 }

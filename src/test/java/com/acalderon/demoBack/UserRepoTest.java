@@ -48,6 +48,7 @@ public class UserRepoTest {
         assertEquals(found.getName(),alex.getName());
     }
 
+
     @Test
     public void findUserExists() {
         String userName = "Julie";

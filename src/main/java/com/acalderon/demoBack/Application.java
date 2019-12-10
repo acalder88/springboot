@@ -17,7 +17,7 @@ public class Application {
 	@Bean
 	CommandLineRunner init(UserRepo userRepository) {
 		return args -> {
-			Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
+			Stream.of("John", "Jennifer", "Helen", "Rachel").forEach(name -> {
 				User user = new User(name);
 				userRepository.save(user);
 			});

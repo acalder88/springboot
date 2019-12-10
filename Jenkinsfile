@@ -21,12 +21,12 @@ node() {
         }
         stage("Test") {
             withMaven(maven: 'maven', jdk: 'jdk') {
-                //sh("mvn clean test -U")
+                sh("mvn clean test -U")
             }
         }
         stage("Build") {
             withMaven(maven: 'maven', jdk: 'jdk') {
-                //sh(" mvn clean package")
+                sh(" mvn clean package")
             }
         }
     } catch(error) {

@@ -66,6 +66,14 @@ node() {
         stage("Publish Image") {
             publishImage(image)
         }
+        stage("Deploy") {
+            withAWS(region:"us-east-1") {
+              echo("Deploying ${serviceName} version ${image} into ${deployName}")
+              writeFile file: "demoback/demoimagedef.json", text: "[{\"name\":\"demo",\"imageUri\":\"${image.endpoint}\"}]"
+              zip dir: "demoback", glob: "", zipFile: "demo.zip"
+              s3Upload acl: 'Private', bucket: "eafit-deploy", file: "demo.zip", path: "demo/", workingDir: ''
+            }
+        }
     } catch(error) {
         throw error
     } finally {

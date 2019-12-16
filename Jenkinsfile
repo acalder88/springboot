@@ -78,31 +78,33 @@ node() {
             sleep 15
             timeout(15) {
               waitUntil {
-                script {
-                  def pipelineStatusJson = sh(script: "aws codepipeline get-pipeline-state --name ${pipeline}"
-                      , returnStdout: true)
-                  def jsonSlurper = new JsonSlurperClassic()
-                  def pipelineStatus = jsonSlurper.parseText(pipelineStatusJson)
-                  def stages = pipelineStatus["stageStates"]
-                  def breakFlag = false
-                  def finished = false
-                  for(stage in stages) {
-                    def status = stage["latestExecution"]["status"]
-                    def name = stage["stageName"]
-                    echo("Current status for stage : ${name} is ${status}")
-                    if("Failed" == status ) {
-                      error("Deploy failed")
+              withAWS(region:"us-east-1") {
+                    script {
+                      def pipelineStatusJson = sh(script: "aws codepipeline get-pipeline-state --name demo-deploy"
+                          , returnStdout: true)
+                      def jsonSlurper = new JsonSlurperClassic()
+                      def pipelineStatus = jsonSlurper.parseText(pipelineStatusJson)
+                      def stages = pipelineStatus["stageStates"]
+                      def breakFlag = false
+                      def finished = false
+                      for(stage in stages) {
+                        def status = stage["latestExecution"]["status"]
+                        def name = stage["stageName"]
+                        echo("Current status for stage : ${name} is ${status}")
+                        if("Failed" == status ) {
+                          error("Deploy failed")
+                        }
+                        if("InProgress" == status) {
+                          breakFlag = true
+                          break
+                        }
+                      }
+                      echo("Break falg is : ${breakFlag}")
+                      if (!breakFlag) {
+                        finished = true
+                      }
+                      return finished
                     }
-                    if("InProgress" == status) {
-                      breakFlag = true
-                      break
-                    }
-                  }
-                  echo("Break falg is : ${breakFlag}")
-                  if (!breakFlag) {
-                    finished = true
-                  }
-                  return finished
                 }
               }
             }

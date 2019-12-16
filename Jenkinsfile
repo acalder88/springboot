@@ -42,10 +42,10 @@ node() {
     try{
         stage("Setup"){
             checkout scm
-            withMaven(maven: 'maven', jdk: 'jdk') {
+            /*withMaven(maven: 'maven', jdk: 'jdk') {
                 version = getVersion()
             }
-            echo ("${version}")
+            echo ("${version}")*/
         }
         /*stage("Test") {
             withMaven(maven: 'maven', jdk: 'jdk') {
@@ -73,6 +73,7 @@ node() {
               writeFile file: "demoback/demoimagedef.json", text: "[{\"name\":\"demo\",\"imageUri\":\"${image}\"}]"
               sh("ls")
               zip dir: "demoback", glob: "", zipFile: "demo.zip"
+              sh("ls")
               s3Upload acl: 'Private', bucket: "eafit-deploy", file: "demo.zip", path: "demo/", workingDir: ''
             }
         }

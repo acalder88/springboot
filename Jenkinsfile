@@ -74,6 +74,39 @@ node() {
               s3Upload acl: 'Private', bucket: "eafit-deploy", file: "demo.zip", path: "demo/", workingDir: ''
             }
         }
+        stage("Validate deploy finished") {
+            sleep 15
+            timeout(15) {
+              waitUntil {
+                script {
+                  def pipelineStatusJson = sh(script: "aws codepipeline get-pipeline-state --name ${pipeline}"
+                      , returnStdout: true)
+                  def jsonSlurper = new JsonSlurperClassic()
+                  def pipelineStatus = jsonSlurper.parseText(pipelineStatusJson)
+                  def stages = pipelineStatus["stageStates"]
+                  def breakFlag = false
+                  def finished = false
+                  for(stage in stages) {
+                    def status = stage["latestExecution"]["status"]
+                    def name = stage["stageName"]
+                    echo("Current status for stage : ${name} is ${status}")
+                    if("Failed" == status ) {
+                      error("Deploy failed")
+                    }
+                    if("InProgress" == status) {
+                      breakFlag = true
+                      break
+                    }
+                  }
+                  echo("Break falg is : ${breakFlag}")
+                  if (!breakFlag) {
+                    finished = true
+                  }
+                  return finished
+                }
+              }
+            }
+        }
     } catch(error) {
         throw error
     } finally {

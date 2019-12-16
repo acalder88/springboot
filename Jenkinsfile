@@ -71,7 +71,7 @@ node() {
               image = "pepe"
               //echo("Deploying demo version ${image.endpoint} into demo environment")
               writeFile file: "demoback/demoimagedef.json", text: "[{\"name\":\"demo\",\"imageUri\":\"${image}\"}]"
-              sh(ls)
+              sh("ls")
               zip dir: "demoback", glob: "", zipFile: "demo.zip"
               s3Upload acl: 'Private', bucket: "eafit-deploy", file: "demo.zip", path: "demo/", workingDir: ''
             }

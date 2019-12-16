@@ -68,7 +68,7 @@ node() {
         }*/
         stage("Deploy") {
             withAWS(region:"us-east-1") {
-              def image = "pepe"
+              image = "pepe"
               //echo("Deploying demo version ${image.endpoint} into demo environment")
               writeFile file: "demoback/demoimagedef.json", text: "[{\"name\":\"demo\",\"imageUri\":\"${image}\"}]"
               sh(ls)

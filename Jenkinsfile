@@ -75,7 +75,7 @@ node() {
             }
         }
         stage("Validate deploy finished") {
-            sleep 15
+            sleep 5
             timeout(15) {
               waitUntil {
               withAWS(region:"us-east-1") {

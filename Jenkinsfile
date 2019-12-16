@@ -70,8 +70,8 @@ node() {
             withAWS(region:"us-east-1") {
               image = "pepe"
               //echo("Deploying demo version ${image.endpoint} into demo environment")
-              writeFile file: "demoback/demoimagedef.json", text: "[{\"name\":\"demo\",\"imageUri\":\"${image}\"}]"
-              sh("zip -r demo.zip demoback")
+              writeFile file: "demoimagedef.json", text: "[{\"name\":\"demo\",\"imageUri\":\"${image}\"}]"
+              sh("zip -r demo.zip demoimagedef.json")
               s3Upload acl: 'Private', bucket: "eafit-deploy", file: "demo.zip", path: "demo/", workingDir: ''
             }
         }

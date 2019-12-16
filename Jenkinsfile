@@ -47,7 +47,7 @@ node() {
             }
             echo ("${version}")
         }
-        stage("Test") {
+        /*stage("Test") {
             withMaven(maven: 'maven', jdk: 'jdk') {
                 sh("mvn clean test -U")
             }
@@ -65,7 +65,7 @@ node() {
         }
         stage("Publish Image") {
             publishImage(image)
-        }
+        }*/
         stage("Deploy") {
             withAWS(region:"us-east-1") {
               echo("Deploying demo version ${image.endpoint} into demo environment")

@@ -73,6 +73,7 @@ node() {
               writeFile file: "demoback/demoimagedef.json", text: "[{\"name\":\"demo\",\"imageUri\":\"${image}\"}]"
               sh("ls")
               zip dir: "demoback", glob: "", zipFile: "demo.zip"
+              sh("zip -r demo.zip demoback")
               sh("ls")
               s3Upload acl: 'Private', bucket: "eafit-deploy", file: "demo.zip", path: "demo/", workingDir: ''
             }

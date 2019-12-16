@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-
+import groovy.json.JsonSlurperClassic
 def buildDockerImage(version, snapshot) {
     def host = "629546332162.dkr.ecr.us-east-1.amazonaws.com"
     def repo = "springboot"

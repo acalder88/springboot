@@ -22,7 +22,7 @@ public class TestController {
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public String getTest() {
-    return "Hello World";
+    return "Hello Conecta";
   }
 
 }

@@ -8,7 +8,7 @@ def buildDockerImage(version, snapshot) {
     def endpoint = "${host}/${repo}:${tag}"
     echo("Building docker image: ${endpoint}")
     sh("sudo \$(aws ecr get-login --no-include-email  --region ${region})")
-    sh("docker build . -t ${endpoint}")
+    sh("sudo docker build . -t ${endpoint}")
     def image =  [
         version: "${version}",
         snapshot:"${snapshot}",
@@ -31,7 +31,7 @@ def getVersion() {
 }
 
 def publishImage(image) {
-    sh("aws ecr batch-delete-image --repository-name=${image.repo} --image-ids imageTag=${image.tag} --region us-east-1")
+    sh("aws ecr batch-delete-image --repository-name=${image.repo} --image-ids imageTag=${image.tag} --region us-east-2")
     echo("Pushing image: ${image.endpoint}")
     sh("docker push ${image.endpoint}")
     sh("docker rmi ${image.endpoint}")

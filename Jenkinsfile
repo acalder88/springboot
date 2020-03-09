@@ -1,14 +1,14 @@
 #!/usr/bin/env groovy
 
 def buildDockerImage(version, snapshot) {
-    def host = "629546332162.dkr.ecr.us-east-1.amazonaws.com"
-    def repo = "springboot"
-    def region = "us-east-1"
+    def host = "486912667928.dkr.ecr.us-east-2.amazonaws.com"
+    def repo = "ramp-up-safe-fleet"
+    def region = "us-east-2"
     def tag = "${version}-${snapshot}"
     def endpoint = "${host}/${repo}:${tag}"
     echo("Building docker image: ${endpoint}")
-    sh("\$(aws ecr get-login --no-include-email  --region ${region})")
-    sh("docker build . -t ${endpoint}")
+    sh("sudo \$(aws ecr get-login --no-include-email  --region ${region})")
+    sh("sudo docker build . -t ${endpoint}")
     def image =  [
         version: "${version}",
         snapshot:"${snapshot}",
@@ -31,10 +31,10 @@ def getVersion() {
 }
 
 def publishImage(image) {
-    sh("aws ecr batch-delete-image --repository-name=${image.repo} --image-ids imageTag=${image.tag} --region us-east-1")
+    sh("aws ecr batch-delete-image --repository-name=${image.repo} --image-ids imageTag=${image.tag} --region us-east-2")
     echo("Pushing image: ${image.endpoint}")
-    sh("docker push ${image.endpoint}")
-    sh("docker rmi ${image.endpoint}")
+    sh("sudo docker push ${image.endpoint}")
+    sh("sudo docker rmi ${image.endpoint}")
 }
 
 node() {
